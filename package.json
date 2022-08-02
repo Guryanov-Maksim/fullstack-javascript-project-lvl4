@@ -1,0 +1,25 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "description": "task manager",
+  "main": "server/plugin.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "fastify start server/plugin.js -l debug -P"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Guryanov-Maksim/fullstack-javascript-project-lvl4.git"
+  },
+  "author": "Maksim Guryanov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Guryanov-Maksim/fullstack-javascript-project-lvl4/issues"
+  },
+  "homepage": "https://github.com/Guryanov-Maksim/fullstack-javascript-project-lvl4#readme",
+  "dependencies": {
+    "fastify": "^4.3.0",
+    "fastify-cli": "^4.4.0"
+  }
+}
