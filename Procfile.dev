@@ -1,1 +1,1 @@
-web: make start-backend
+web: make start-backend --port $PORT --host 0.0.0.0 
