@@ -8,15 +8,15 @@ html(lang="ru")
   body.d-flex.flex-column.min-vh-100
     nav.navbar.navbar-expand-lg.navbar-light.bg-light.mb-3
       .container
-        a.navbar-brand(href=route('root'))= 'Менеджер задач'
+        a.navbar-brand(href=route('root'))= t('appName')
         button.navbar-toggler(data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent")
           span.navbar-toggler-icon
         .collapse.navbar-collapse(id="navbarToggleExternalContent")
           .container-fluid
             ul.navbar-nav.justify-content-end.w-100
               li.nav-item.me-auto
-                a.nav-link(href=route('users'))= 'Пользователи'
+                a.nav-link(href=route('users'))= t('layouts.application.users')
               li.nav-item
-                a.nav-link(href=route('newSession'))= "Вход"
+                a.nav-link(href=route('newSession'))= t('layouts.application.signIn')
               li.nav-item
-                a.nav-link(href=route('newUser'))= "Регистрация"
+                a.nav-link(href=route('newUser'))= t('layouts.application.signUp')

@@ -28,6 +28,7 @@
     "fastify-cli": "^4.4.0",
     "fastify-plugin": "^4.0.0",
     "fastify-reverse-routes": "^3.0.0",
+    "i18next": "^21.9.0",
     "path-to-regexp": "^6.2.1",
     "pug": "^3.0.2"
   },
