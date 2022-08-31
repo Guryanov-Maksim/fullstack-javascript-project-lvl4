@@ -8,5 +8,25 @@ export default {
         signUp: 'Регистрация',
       },
     },
+    views: {
+      users: {
+        new: {
+          signUp: 'Регистрация',
+          submit: 'Отправить',
+          firstName: 'Имя',
+          lastName: 'Фамилия',
+          password: 'Пароль',
+          email: 'Email',
+        },
+      },
+    },
+    flash: {
+      users: {
+        create: {
+          success: 'Пользователь успешно зарегистрирован',
+          error: 'Не удалось зарегистрировать',
+        },
+      },
+    },
   },
 };
