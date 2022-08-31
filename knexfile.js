@@ -24,7 +24,7 @@ export const production = {
   client: 'pg',
   useNullAsDefault: true,
   connection: {
-    host: process.env.DATABASE_URL,
+    connectionString: process.env.DATABASE_URL,
     ssl: { rejectUnauthorized: false },
   },
   migrations,
