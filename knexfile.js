@@ -21,7 +21,7 @@ export const development = {
 };
 
 export const production = {
-  client: 'postgresql',
+  client: 'pg',
   useNullAsDefault: true,
   connection: process.env.DATABASE_URL,
   migrations,
