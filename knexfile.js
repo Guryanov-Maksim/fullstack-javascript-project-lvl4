@@ -23,7 +23,10 @@ export const development = {
 export const production = {
   client: 'pg',
   useNullAsDefault: true,
-  connection: process.env.DATABASE_URL,
+  connection: {
+    host: process.env.DATABASE_URL,
+    ssl: { rejectUnauthorized: false },
+  },
   migrations,
 };
   // staging: {
