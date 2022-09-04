@@ -37,6 +37,10 @@ class User extends unique(BaseModel) {
   set password(value) { 
     this.passwordDigest = encrypt(value);
   }
+
+  verifyPassword(password) {
+    return this.passwordDigest === encrypt(password);
+  }
 }
 
 export default User;

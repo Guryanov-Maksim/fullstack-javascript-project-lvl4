@@ -6,9 +6,18 @@ export default {
         users: 'Пользователи',
         signIn: 'Вход',
         signUp: 'Регистрация',
+        signOut: 'Выход',
       },
     },
     views: {
+      session: {
+        new: {
+          mail: 'Email',
+          password: 'Пароль',
+          signIn: 'Вход',
+          submit: 'Войти',
+        },
+      },
       users: {
         new: {
           signUp: 'Регистрация',
@@ -25,6 +34,15 @@ export default {
         create: {
           success: 'Пользователь успешно зарегистрирован',
           error: 'Не удалось зарегистрировать',
+        },
+      },
+      session: {
+        create: {
+          error: 'Неправильный емейл или пароль',
+          success: 'Вы залогинены',
+        },
+        delete: {
+          success: 'Вы разлогинены',
         },
       },
     },

@@ -12,6 +12,8 @@ import fastifyStatic from '@fastify/static';
 import fastifyFlash from '@fastify/flash';
 import fastifyFormbody from '@fastify/formbody';
 import fastifyObjectionjs from 'fastify-objectionjs';
+import fastifyMethodOverride from 'fastify-method-override';
+import fastifyPassport from '@fastify/passport';
 import { plugin as fastifyReverseRoutes } from 'fastify-reverse-routes';
 import fastifySecureSession from '@fastify/secure-session';
 import { fileURLToPath } from 'url';
@@ -25,6 +27,7 @@ import addRoutes from './routes/index.js';
 import ru from './locales/ru.js';
 import models from './models/index.js';
 import * as knexConfig from '../knexfile.js';
+import FormStrategy from './lib/FormStrategy/index.js';
 
 const __dirname = fileURLToPath(path.dirname(import.meta.url));
 
@@ -68,6 +71,14 @@ const setupLocalization = async () => {
     });
 };
 
+const addHooks = (app) => {
+  app.addHook('preHandler', async (req, reply) => {
+    reply.locals = {
+      isAuthenticated: () => req.isAuthenticated(),
+    };
+  });
+};
+
 const registerPlugins = async (app) => {
   await app.register(fastifyReverseRoutes);
   app.register(fastifySecureSession, {
@@ -76,13 +87,21 @@ const registerPlugins = async (app) => {
       path: '/',
     },
   });
-  app.register(fastifyFlash);
+  app.register(fastifyPassport.initialize());
+  app.register(fastifyPassport.secureSession());
+  fastifyPassport.use(new FormStrategy('form', app));
+  fastifyPassport.registerUserSerializer(async (user) => user); // maybe shoud add a promise
+  fastifyPassport.registerUserDeserializer(async (user) => (
+    app.objection.models.user.query().findById(user.id)
+  ));
+  app.decorate('fp', fastifyPassport);
+  // app.register(fastifyFlash);
+  await app.register(fastifyMethodOverride);
   app.register(fastifyFormbody, { parser: qs.parse });
   app.register(fastifyObjectionjs, {
     knexConfig: knexConfig[mode],
     models,
-  })
-
+  });
 };
 
 export default async (app, options) => {
@@ -91,6 +110,7 @@ export default async (app, options) => {
   setUpStaticAssets(app);
   setUpViews(app);
   addRoutes(app);
+  addHooks(app);
 
   return app;
 };
