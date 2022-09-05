@@ -19,3 +19,7 @@ block content
           td !{user.firstName} !{user.lastName}
           td= user.email
           td= formatDate(user.createdAt)
+          td
+            div.d-flex.flex-wrap
+              a.btn.btn-primary.me-1(href=`users/${user.id}/edit`)= t('views.users.edit.change')
+              +buttonTo(`/users/${user.id}`, 'delete')(class="btn btn-danger" value=t('views.users.edit.delete'))

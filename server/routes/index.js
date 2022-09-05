@@ -61,5 +61,82 @@ export default (app) => {
     request.logOut();
     request.flash('info', i18next.t('flash.session.delete.success'));
     reply.redirect(app.reverse('root'));
+    return reply;
   });
+  app.get(
+    '/users/:userId/edit',
+    {
+      exposeHeadRoute: false,
+      preValidation: app.fp.authenticate(
+        'form',
+        {
+          failureRedirect: app.reverse('root'),
+          failureFlash: i18next.t('flash.authError'),
+        },
+      ),
+    },
+    async (req, reply, error) => {
+      if (error) {
+        throw Error('internet error');
+      }
+      const authenticatedUserId = req.user.id;
+      const { userId } = req.params;
+      if (authenticatedUserId !== Number(userId)) {
+        req.flash('error', i18next.t('flash.edit.accessError'));
+        reply.redirect(app.reverse('users'));
+        return reply;
+      }
+      reply.render('users/edit', { user: req.user });
+      return reply;
+    },
+  );
+  app.patch('/users/:userId', { exposeHeadRoute: false }, async (req, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
+    const User = app.objection.models.user;
+    const user = new User();
+    user.$set(req.body.data);
+
+    try {
+      const validUser = await app.objection.models.user.fromJson(req.body.data);
+      await req.user.$query().patch(validUser); // watch this https://vincit.github.io/objection.js/guide/query-examples.html#update-queries
+      req.flash('info', i18next.t('flash.edit.success'));
+      reply.redirect(app.reverse('users'));
+    } catch (err) {
+      req.flash('error', i18next.t('flash.edit.error'));
+      reply.render('users/edit', { user, errors: err.data });
+    }
+
+    return reply;
+  });
+  app.delete(
+    '/users/:userId',
+    {
+      exposeHeadRoute: false,
+      preValidation: app.fp.authenticate(
+        'form',
+        {
+          failureRedirect: app.reverse('root'),
+          failureFlash: i18next.t('flash.authError'),
+        },
+      ),
+    },
+    async (req, reply, error) => {
+      if (error) {
+        throw Error('internet error');
+      }
+
+      const authenticatedUserId = req.user.id;
+      const { userId } = req.params;
+      if (authenticatedUserId !== Number(userId)) {
+        req.flash('error', i18next.t('flash.edit.accessError'));
+        reply.redirect(app.reverse('users'));
+        return reply;
+      }
+
+      req.logOut();
+      await app.objection.models.user.query().deleteById(authenticatedUserId);
+      req.flash('info', i18next.t('flash.delete.success'));
+      reply.redirect(app.reverse('users'));
+      return reply;
+    },
+  );
 };

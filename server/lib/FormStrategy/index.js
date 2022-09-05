@@ -8,6 +8,10 @@ export default class FormStrategy extends Strategy {
   }
 
   async authenticate(request) {
+    if (request.isAuthenticated()) {
+      return this.pass();
+    }
+
     const email = _.get(request, 'body.data.email', null);
     const password = _.get(request, 'body.data.password', null);
     const { models } = this.app.objection;
