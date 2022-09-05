@@ -27,6 +27,12 @@ export default {
           password: 'Пароль',
           email: 'Email',
         },
+        id: 'ID',
+        fullName: 'Полное имя',
+        email: 'Email',
+        createdAt: 'Дата создания',
+        actions: 'Действия',
+        header: 'Пользователи',
       },
     },
     flash: {

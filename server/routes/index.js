@@ -13,8 +13,10 @@ export default (app) => {
   app.get('/users/new', { name: 'newUser', exposeHeadRoute: false }, (request, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
     reply.render('users/new');
   });
-  app.get('/users', { name: 'users', exposeHeadRoute: false }, (request, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
-    reply.render('users/index', { user });
+  app.get('/users', { name: 'users', exposeHeadRoute: false }, async (request, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
+    const users = await app.objection.models.user.query();
+    reply.render('users/index', { users });
+    return reply;
   });
   app.post('/users', { exposeHeadRoute: false }, async (request, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
     const user = new app.objection.models.user();
