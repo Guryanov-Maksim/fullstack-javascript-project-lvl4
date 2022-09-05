@@ -64,7 +64,7 @@ export default (app) => {
     return reply;
   });
   app.get(
-    '/users/:userId/edit',
+    '/users/:id/edit',
     {
       exposeHeadRoute: false,
       preValidation: app.fp.authenticate(
@@ -79,9 +79,9 @@ export default (app) => {
       if (error) {
         throw Error('internet error');
       }
-      const authenticatedUserId = req.user.id;
-      const { userId } = req.params;
-      if (authenticatedUserId !== Number(userId)) {
+      const authenticatedUserid = req.user.id;
+      const { id } = req.params;
+      if (authenticatedUserid !== Number(id)) {
         req.flash('error', i18next.t('flash.edit.accessError'));
         reply.redirect(app.reverse('users'));
         return reply;
@@ -90,7 +90,7 @@ export default (app) => {
       return reply;
     },
   );
-  app.patch('/users/:userId', { exposeHeadRoute: false }, async (req, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
+  app.patch('/users/:id', { exposeHeadRoute: false }, async (req, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
     const User = app.objection.models.user;
     const user = new User();
     user.$set(req.body.data);
@@ -108,7 +108,7 @@ export default (app) => {
     return reply;
   });
   app.delete(
-    '/users/:userId',
+    '/users/:id',
     {
       exposeHeadRoute: false,
       preValidation: app.fp.authenticate(
@@ -124,16 +124,16 @@ export default (app) => {
         throw Error('internet error');
       }
 
-      const authenticatedUserId = req.user.id;
-      const { userId } = req.params;
-      if (authenticatedUserId !== Number(userId)) {
+      const authenticatedUserid = req.user.id;
+      const { id } = req.params;
+      if (authenticatedUserid !== Number(id)) {
         req.flash('error', i18next.t('flash.edit.accessError'));
         reply.redirect(app.reverse('users'));
         return reply;
       }
 
       req.logOut();
-      await app.objection.models.user.query().deleteById(authenticatedUserId);
+      await app.objection.models.user.query().deleteById(authenticatedUserid);
       req.flash('info', i18next.t('flash.delete.success'));
       reply.redirect(app.reverse('users'));
       return reply;
