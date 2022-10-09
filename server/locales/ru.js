@@ -7,6 +7,7 @@ export default {
         signIn: 'Вход',
         signUp: 'Регистрация',
         signOut: 'Выход',
+        statuses: 'Статусы',
       },
     },
     views: {
@@ -16,6 +17,23 @@ export default {
           password: 'Пароль',
           signIn: 'Вход',
           submit: 'Войти',
+        },
+      },
+      statuses: {
+        header: 'Статусы',
+        id: 'ID',
+        name: 'Наименование',
+        createdAt: 'Дата создания',
+        create: 'Создать статус',
+        edit: {
+          change: 'Изменить',
+          delete: 'Удалить',
+          header: 'Изменение статуса',
+        },
+        new: {
+          create: 'Создать',
+          header: 'Создание статуса',
+          name: 'Нименование',
         },
       },
       users: {
@@ -55,6 +73,19 @@ export default {
         },
         delete: {
           success: 'Вы разлогинены',
+        },
+      },
+      statuses: {
+        create: {
+          error: 'Не удалось создать статус',
+          success: 'Статус успешно создан',
+        },
+        delete: {
+          success: 'Статус успешно удалён',
+        },
+        edit: {
+          success: 'Статус успешно изменён',
+          error: 'Не удалось изменить статус',
         },
       },
       authError: 'Доступ запрещён! Пожалуйста, авторизируйтесь.',

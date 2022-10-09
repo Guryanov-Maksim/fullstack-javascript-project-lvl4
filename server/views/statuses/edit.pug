@@ -1,0 +1,11 @@
+extends ../layouts/application.pug
+
+block header
+  = t('views.statuses.edit.header')
+
+block content
+  .card
+    .card-body.p-5.bg-light
+      +formFor()(action=`/statuses/${status.id}` method='post')
+        +input(status, 'name', errors)(type="text")
+        +buttonTo(`/statuses/${status.id}`, 'patch')(class="btn btn-primary" value=t('views.statuses.edit.change'))
