@@ -12,3 +12,6 @@ start-backend:
 
 start-frontend:
 	npx webpack --watch --progress
+
+test:
+	npm test
