@@ -10,6 +10,14 @@
     "test": "jest",
     "start": "fastify start server/plugin.js -l debug -P --port $PORT -a 0.0.0.0"
   },
+  "jest": {
+    "modulePathIgnorePatterns": [
+       "<rootDir>/__tests__/helpers/"
+    ],
+    "setupFiles": [
+       "dotenv/config"
+    ]
+ },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Guryanov-Maksim/fullstack-javascript-project-lvl4.git"
