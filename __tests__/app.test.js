@@ -1,9 +1,6 @@
 import fastify from 'fastify';
 import init from '../server/plugin';
 
-// TODO:
-// 1. Create correct data for tests
-
 describe('requests', () => {
   let app;
 
