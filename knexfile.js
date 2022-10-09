@@ -29,6 +29,13 @@ export const production = {
   },
   migrations,
 };
+
+export const test = {
+  client: 'sqlite3',
+  connection: ':memory:',
+  useNullAsDefault: true,
+  migrations,
+};
   // staging: {
   //   client: 'postgresql',
   //   connection: {
