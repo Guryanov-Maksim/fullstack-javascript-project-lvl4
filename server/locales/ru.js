@@ -8,6 +8,7 @@ export default {
         signUp: 'Регистрация',
         signOut: 'Выход',
         statuses: 'Статусы',
+        tasks: 'Задачи',
       },
     },
     views: {
@@ -33,7 +34,30 @@ export default {
         new: {
           create: 'Создать',
           header: 'Создание статуса',
-          name: 'Нименование',
+          name: 'Наименование',
+        },
+      },
+      tasks: {
+        header: 'Задачи',
+        id: 'ID',
+        name: 'Наименование',
+        create: 'Создать задачу',
+        status: 'Статус',
+        author: 'Автор',
+        executor: 'Исполнитель',
+        createdAt: 'Дата создания',
+        new: {
+          create: 'Создать',
+          header: 'Создание задачи',
+          name: 'Наименование',
+          description: 'Описание',
+          statusId: 'Статус',
+          executorId: 'Исполнитель',
+          mark: 'Метка',
+        },
+        edit: {
+          change: 'Изменить',
+          delete: 'Удалить',
         },
       },
       users: {
@@ -86,6 +110,12 @@ export default {
         edit: {
           success: 'Статус успешно изменён',
           error: 'Не удалось изменить статус',
+        },
+      },
+      tasks: {
+        create: {
+          error: 'Не удалось создать задачу',
+          success: 'Задача успешно создана',
         },
       },
       authError: 'Доступ запрещён! Пожалуйста, авторизируйтесь.',

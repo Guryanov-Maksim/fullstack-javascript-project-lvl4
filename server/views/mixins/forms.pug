@@ -5,20 +5,64 @@ mixin formFor(entity = null)
   form&attributes(attributes)
     block
 
-mixin input(entity, propertyName, errors = {})
+mixin input(entity, propertyName, errors = {}, entityName)
   - propertyErrors = _.get(errors, propertyName)
   - classLine = 'form-control' + (_.isEmpty(propertyErrors) ? '' : ' is-invalid')
   - inputId = getInputId(propertyName)
   .mb-3(class=(errors[propertyName] && 'has-danger'))
     label(
       for= inputId
-    )= t(`views.users.new.${propertyName}`)
+    )= t(`views.${entityName}.new.${propertyName}`)
     input(
       id= inputId
       name=getInputName(propertyName)
       class=classLine
       value=_.get(entity, propertyName, '')
     )&attributes(attributes)
+    if !_.isEmpty(propertyErrors)
+      .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
+
+mixin textarea(entity, propertyName, errors = {}, entityName)
+  - propertyErrors = _.get(errors, propertyName)
+  - classLine = 'form-control' + (_.isEmpty(propertyErrors) ? '' : ' is-invalid')
+  - inputId = getInputId(propertyName)
+  .mb-3(class=(errors[propertyName] && 'has-danger'))
+    label(
+      for= inputId
+    )= t(`views.${entityName}.new.${propertyName}`)
+    textarea(
+      id= inputId
+      name=getInputName(propertyName)
+      class=classLine
+    )&attributes(attributes)= _.get(entity, propertyName, '')
+    if !_.isEmpty(propertyErrors)
+      .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
+
+mixin select(entity, propertyName, errors = {}, entityName, options)
+  - propertyErrors = _.get(errors, propertyName)
+  - classLine = 'form-control' + (_.isEmpty(propertyErrors) ? '' : ' is-invalid')
+  - inputId = getInputId(propertyName)
+  .mb-3(class=(errors[propertyName] && 'has-danger'))
+    label(
+      for= inputId
+    )= t(`views.${entityName}.new.${propertyName}`)
+    select(
+      id= inputId
+      name=getInputName(propertyName)
+      class=classLine
+    )&attributes(attributes)
+      option()
+      each option in options
+        - const isSelected = Number(option.id) === Number(_.get(entity, propertyName, 0));
+        if isSelected
+          option(
+            selected= 'selected'
+            value= option.id
+          )= option.name
+        else
+          option(
+            value= option.id
+          )= option.name
     if !_.isEmpty(propertyErrors)
       .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
 

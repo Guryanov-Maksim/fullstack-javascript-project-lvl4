@@ -38,6 +38,10 @@ class User extends unique(BaseModel) {
     this.passwordDigest = encrypt(value);
   }
 
+  get name() {
+    return `${this.lastName} ${this.firstName}`;
+  }
+
   verifyPassword(password) {
     return this.passwordDigest === encrypt(password);
   }
