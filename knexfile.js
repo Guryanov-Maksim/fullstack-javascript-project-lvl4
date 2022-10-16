@@ -17,6 +17,11 @@ export const development = {
   connection: {
     filename: './default.sqlite'
   },
+  pool: {
+    afterCreate: (conn, cb) => (
+      conn.run('PRAGMA foreign_keys = ON', cb)
+    ),
+  },
   migrations,
 };
 
