@@ -95,11 +95,16 @@ export default (app) => {
           reply.redirect(app.reverse('users'));
           return reply;
         }
+        try {
+          await app.objection.models.user.query().deleteById(authenticatedUserid);
+          req.logOut();
+          req.flash('info', i18next.t('flash.delete.success'));
+          reply.redirect(app.reverse('users'));
+        } catch (err) {
+          req.flash('error', i18next.t('flash.delete.error'));
+          reply.redirect(app.reverse('users'));
+        }
 
-        req.logOut();
-        await app.objection.models.user.query().deleteById(authenticatedUserid);
-        req.flash('info', i18next.t('flash.delete.success'));
-        reply.redirect(app.reverse('users'));
         return reply;
       },
     );

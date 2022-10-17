@@ -13,14 +13,12 @@ export const up = (knex) => (
       .integer('creator_id')
       .references('id')
       .inTable('users')
-      .onDelete('SET NULL')
-      .index();
+      .onDelete('RESTRICT');
     table
       .integer('executor_id')
       .references('id')
       .inTable('users')
-      .onDelete('SET NULL')
-      .index();
+      .onDelete('RESTRICT');
     table.timestamp('created_at').defaultTo(knex.fn.now());
   })
 );
