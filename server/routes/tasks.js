@@ -56,5 +56,74 @@ export default (app) => {
       }
 
       return reply;
+    })
+    .get('/tasks/:id/edit', { exposeHeadRoute: false, ...getDefaultOptions(app) }, async (req, reply, error) => {
+      if (error) {
+        throw Error('internet error');
+      }
+      const { id } = req.params;
+      const task = await app.objection.models.task.query().findById(id);
+      const statuses = await app.objection.models.status.query();
+      const users = await app.objection.models.user.query();
+      reply.render('tasks/edit', { task, statuses, users });
+
+      return reply;
+    })
+    .patch('/tasks/:id', { exposeHeadRoute: false, ...getDefaultOptions(app) }, async (req, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
+      const Task = app.objection.models.task;
+      const updatedTask = new Task();
+      updatedTask.$set(req.body.data);
+
+      const { id } = req.params;
+      const currentTask = await app.objection.models.task.query().findById(id);
+
+      try {
+        const taskToSave = {
+          ...req.body.data,
+          statusId: Number(req.body.data.statusId),
+          creatorId: req.user.id,
+          executorId: Number(req.body.data.executorId) || null,
+        };
+        const validTask = await app.objection.models.task.fromJson(taskToSave);
+        await currentTask.$query().patch(validTask);
+
+        req.flash('info', i18next.t('flash.tasks.edit.success'));
+        reply.redirect(app.reverse('tasks'));
+      } catch (err) {
+        req.flash('error', i18next.t('flash.tasks.edit.error'));
+        const statuses = await app.objection.models.status.query();
+        const users = await app.objection.models.user.query();
+        reply.render('tasks/edit', {
+          task: { ...currentTask, ...updatedTask },
+          errors: err.data,
+          statuses,
+          users,
+        });
+      }
+
+      return reply;
+    })
+    .delete('/tasks/:id', { exposeHeadRoute: false, ...getDefaultOptions(app) }, async (req, reply, error) => {
+      if (error) {
+        throw Error('internet error');
+      }
+      const authenticatedUserId = req.user.id;
+      const { id } = req.params;
+      const { creator } = await app.objection.models.task.query().findById(id).withGraphFetched('creator');
+      if (authenticatedUserId !== creator.id) {
+        req.flash('error', i18next.t('flash.tasks.delete.accessError'));
+        reply.redirect(app.reverse('tasks'));
+        return reply;
+      }
+      try {
+        await app.objection.models.task.query().deleteById(id);
+        req.flash('info', i18next.t('flash.tasks.delete.success'));
+        reply.redirect(app.reverse('tasks'));
+      } catch (err) {
+        req.flash('error', i18next.t('flash.tasks.delete.error'));
+        reply.redirect(app.reverse('tasks'));
+      }
+
+      return reply;
     });
 };
