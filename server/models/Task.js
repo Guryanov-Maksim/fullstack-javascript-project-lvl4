@@ -18,7 +18,7 @@ class Task extends Model {
         description: { type: 'string' },
         statusId: { type: ['integer'], minimum: 1 },
         creatorId: { type: 'integer' },
-        executorId: { type: ['integer'] },
+        executorId: { type: ['integer', 'null'] },
       },
     };
   }

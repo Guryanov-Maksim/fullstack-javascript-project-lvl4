@@ -42,7 +42,7 @@ export default (app) => {
           ...request.body.data,
           statusId: Number(request.body.data.statusId),
           creatorId: request.user.id,
-          executorId: Number(request.body.data.executorId),
+          executorId: Number(request.body.data.executorId) || null,
         };
         const validTask = await app.objection.models.task.fromJson(taskToSave);
         await app.objection.models.task.query().insert(validTask);
