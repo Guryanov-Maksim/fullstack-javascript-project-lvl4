@@ -19,8 +19,6 @@ export default (app) => {
       // const tasks = await app.objection.models.task.query().withGraphJoined('status');
       // const statuses = await app.objection.models.status.query();
       const users = await app.objection.models.user.query();
-      console.log('000000000000   tasks   00000000000000000');
-      console.log(tasks);
       reply.render('tasks/index', { tasks, users });
 
       return reply;
