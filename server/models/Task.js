@@ -2,6 +2,7 @@ import { Model } from 'objection';
 
 import Status from './Status.js';
 import User from './User.js';
+import Label from './Label.js';
 
 class Task extends Model {
   static get tableName() {
@@ -47,6 +48,18 @@ class Task extends Model {
         join: {
           from: 'tasks.executorId',
           to: 'users.id',
+        },
+      },
+      labels: {
+        relation: Model.ManyToManyRelation,
+        modelClass: Label,
+        join: {
+          from: 'tasks.id',
+          through: {
+            from: 'tasks_with_labels.task_id',
+            to: 'tasks_with_labels.label_id',
+          },
+          to: 'labels.id',
         },
       },
     };

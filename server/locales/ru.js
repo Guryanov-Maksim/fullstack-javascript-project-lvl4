@@ -9,9 +9,27 @@ export default {
         signOut: 'Выход',
         statuses: 'Статусы',
         tasks: 'Задачи',
+        labels: 'Метки',
       },
     },
     views: {
+      labels: {
+        header: 'Метки',
+        id: 'ID',
+        name: 'Наименование',
+        create: 'Создать метку',
+        createdAt: 'Дата создания',
+        new: {
+          create: 'Создать',
+          header: 'Создание метки',
+          name: 'Наименование',
+        },
+        edit: {
+          change: 'Изменить',
+          delete: 'Удалить',
+          header: 'Изменение метки',
+        },
+      },
       session: {
         new: {
           mail: 'Email',
@@ -53,9 +71,10 @@ export default {
           description: 'Описание',
           statusId: 'Статус',
           executorId: 'Исполнитель',
-          mark: 'Метка',
+          labels: 'Метка',
         },
         edit: {
+          header: 'Изменение задачи',
           change: 'Изменить',
           delete: 'Удалить',
         },
@@ -88,6 +107,20 @@ export default {
         create: {
           success: 'Пользователь успешно зарегистрирован',
           error: 'Не удалось зарегистрировать',
+        },
+      },
+      labels: {
+        create: {
+          error: 'Не удалось создать метку',
+          success: 'Метка успешно создана',
+        },
+        edit: {
+          success: 'Метка успешно изменена',
+          error: 'Не удалось изменить метку',
+        },
+        delete: {
+          success: 'Метка успешно удалёна',
+          error: 'Не удалось удалить метку',
         },
       },
       session: {

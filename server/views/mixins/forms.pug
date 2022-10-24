@@ -66,6 +66,33 @@ mixin select(entity, propertyName, errors = {}, entityName, options)
     if !_.isEmpty(propertyErrors)
       .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
 
+mixin multipleSelect(entity, propertyName, errors = {}, entityName, options)
+  - propertyErrors = _.get(errors, propertyName)
+  - classLine = 'form-control' + (_.isEmpty(propertyErrors) ? '' : ' is-invalid')
+  - inputId = getInputId(propertyName)
+  .mb-3(class=(errors[propertyName] && 'has-danger'))
+    label(
+      for= inputId
+    )= t(`views.${entityName}.new.${propertyName}`)
+    select(
+      id= inputId
+      name=getInputName(propertyName)
+      class=classLine
+    )&attributes(attributes)
+      each option in options
+        - const isSelected = _.get(entity, propertyName, []).some((prop) =>prop.id === option.id);
+        if isSelected
+          option(
+            selected= 'selected'
+            value= option.id
+          )= option.name
+        else
+          option(
+            value= option.id
+          )= option.name
+    if !_.isEmpty(propertyErrors)
+      .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
+
 mixin submit(form = null)
   input(class='btn btn-primary' type='submit')&attributes(attributes)
 

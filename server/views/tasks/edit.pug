@@ -11,4 +11,5 @@ block content
         +textarea(task, 'description', errors, 'tasks')(cols="30", rows="3")
         +select(task, 'statusId', errors, 'tasks', statuses)
         +select(task, 'executorId', errors, 'tasks', users)
+        +multipleSelect(task, 'labels', errors, 'tasks', labels)(multiple="multiple")
         +buttonTo(`/tasks/${task.id}`, 'patch')(class="btn btn-primary" value=t('views.tasks.edit.change'))

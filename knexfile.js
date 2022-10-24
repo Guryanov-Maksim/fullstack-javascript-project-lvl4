@@ -21,6 +21,8 @@ export const development = {
     afterCreate: (conn, cb) => (
       conn.run('PRAGMA foreign_keys = ON', cb)
     ),
+    min: 1,
+    max: 20,
   },
   migrations,
 };
