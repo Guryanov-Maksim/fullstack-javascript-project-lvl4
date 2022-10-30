@@ -13,6 +13,20 @@
       "password": "O6AvLIQL1cbzrre"
     }
   },
+  "labels": {
+    "new": {
+      "name": "new label name"
+    },
+    "existing": {
+      "name": "existing label name"
+    },
+    "updated": {
+      "name": "updated label name"
+    },
+    "delete": {
+      "name": "label to delete"
+    }
+  },
   "statuses": {
     "new": {
       "name": "new status"
