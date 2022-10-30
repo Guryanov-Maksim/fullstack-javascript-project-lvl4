@@ -120,8 +120,7 @@ export default (app) => {
         const validTask = await app.objection.models.task.fromJson(taskToSave);
 
         await app.objection.models.task.transaction(async (trx) => {
-          await currentTask.$query().patch(validTask);
-
+          await currentTask.$query(trx).patch(validTask);
           const promises = [...allLabelIds]
             .map((labelId) => {
               if (currentLabelIds.includes(labelId) && updatedLabelIds.includes(labelId)) {
@@ -187,7 +186,7 @@ export default (app) => {
       try {
         const currentTask = await app.objection.models.task.query().findById(id).withGraphFetched('labels');
         await app.objection.models.task.transaction(async (trx) => {
-          await currentTask.$query().deleteById(id);
+          await currentTask.$query(trx).deleteById(id);
 
           const promises = currentTask.labels
             .map((label) => (
