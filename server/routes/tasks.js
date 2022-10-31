@@ -23,9 +23,51 @@ const getLabelIds = (data) => {
 export default (app) => {
   app
     .get('/tasks', { name: 'tasks', ...getDefaultOptions(app) }, async (request, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
-      const tasks = await app.objection.models.task.query().withGraphFetched('[status, labels]');
       const users = await app.objection.models.user.query();
-      reply.render('tasks/index', { tasks, users });
+      const labels = await app.objection.models.label.query();
+      const statuses = await app.objection.models.status.query();
+
+      const statusId = _.get(request.query, 'status', null);
+      const executorId = _.get(request.query, 'executor', null);
+      const labelId = _.get(request.query, 'label', null);
+      const isCreatorUser = _.has(request.query, 'isCreatorUser');
+
+      const tasks = await app.objection.models.task
+        .query()
+        .withGraphJoined('[status, labels]')
+        .modify((queryBuilder) => {
+          if (statusId) {
+            queryBuilder.where('tasks.status_id', statusId);
+          }
+          if (executorId) {
+            queryBuilder.where('tasks.executor_id', executorId);
+          }
+          if (labelId) {
+            queryBuilder
+              .where('labels.id', labelId);
+          }
+          if (isCreatorUser) {
+            queryBuilder.where('tasks.creator_id', request.user.id);
+          }
+        });
+
+      const filter = {
+        status: statusId,
+        executor: executorId,
+        label: labelId,
+        isCreatorUser,
+      };
+
+      reply.render(
+        'tasks/index',
+        {
+          filter,
+          tasks,
+          users,
+          labels,
+          statuses,
+        },
+      );
 
       return reply;
     })

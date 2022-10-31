@@ -4,7 +4,17 @@ block header
   = t('views.tasks.header')
 
 block content
-  a.btn.btn-primary(href=`tasks/new`)= t('views.tasks.create')
+  a.btn.btn-primary.mb-5(href=`tasks/new`)= t('views.tasks.create')
+  .card
+    .card-body.p-5.bg-light
+      +formFor()(action=route('tasks') method='get')
+        .row
+          +filterSelect(filter, 'status', statuses)
+          +filterSelect(filter, 'executor', users)
+          +filterSelect(filter, 'label', labels)
+        +checkbox(filter, 'isCreatorUser', 'tasks')(type='checkbox')
+        +submit(filter)(value=t('views.tasks.filter.show'))
+
   table.table.table-striped
     thead
       tr

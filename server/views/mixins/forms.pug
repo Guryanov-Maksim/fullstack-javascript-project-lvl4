@@ -66,6 +66,46 @@ mixin select(entity, propertyName, errors = {}, entityName, options)
     if !_.isEmpty(propertyErrors)
       .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
 
+mixin filterSelect(entity, propertyName, options)
+  - inputId = getInputId(propertyName)
+  .col-12.col-md
+    .input-group.mb-3
+      label(
+        class='input-group-text'
+        for= inputId
+      )= t(`views.tasks.filter.${propertyName}`)
+      select(
+        id= inputId
+        name=`${propertyName}`
+        class='form-select'
+      )&attributes(attributes)
+        option()
+        each option in options
+          - const isSelected = Number(option.id) === Number(_.get(entity, propertyName, 0));
+          if isSelected
+            option(
+              selected= 'selected'
+              value= option.id
+            )= option.name
+          else
+            option(
+              value= option.id
+            )= option.name
+
+mixin checkbox(entity, propertyName, entityName)
+  - classLine = 'form-control' + (_.isEmpty(propertyErrors) ? '' : ' is-invalid')
+  - inputId = getInputId(propertyName)
+  .mb-3.form-check
+    input(
+      id= inputId
+      name=`${propertyName}`
+      class='form-check-input'
+      checked= entity.isCreatorUser
+    )&attributes(attributes)
+    label(
+      for= inputId
+    )= t(`views.${entityName}.filter.${propertyName}`)
+
 mixin multipleSelect(entity, propertyName, errors = {}, entityName, options)
   - propertyErrors = _.get(errors, propertyName)
   - classLine = 'form-control' + (_.isEmpty(propertyErrors) ? '' : ' is-invalid')

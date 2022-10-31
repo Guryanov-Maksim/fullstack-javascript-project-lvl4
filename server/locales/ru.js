@@ -78,6 +78,13 @@ export default {
           change: 'Изменить',
           delete: 'Удалить',
         },
+        filter: {
+          status: 'Статус',
+          executor: 'Исполнитель',
+          label: 'Метка',
+          isCreatorUser: 'Только мои задачи',
+          show: 'Показать',
+        },
       },
       users: {
         new: {
