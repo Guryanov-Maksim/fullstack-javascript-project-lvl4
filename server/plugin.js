@@ -80,14 +80,14 @@ const addHooks = (app) => {
 
 const registerPlugins = async (app) => {
   await app.register(fastifyReverseRoutes);
-  app.register(fastifySecureSession, {
+  await app.register(fastifySecureSession, {
     secret: process.env.SESSION_KEY,
     cookie: {
       path: '/',
     },
   });
-  app.register(fastifyPassport.initialize());
-  app.register(fastifyPassport.secureSession());
+  await app.register(fastifyPassport.initialize());
+  await app.register(fastifyPassport.secureSession());
   fastifyPassport.use(new FormStrategy('form', app));
   fastifyPassport.registerUserSerializer(async (user) => user); // maybe shoud add a promise
   fastifyPassport.registerUserDeserializer(async (user) => (
@@ -95,8 +95,8 @@ const registerPlugins = async (app) => {
   ));
   app.decorate('fp', fastifyPassport);
   await app.register(fastifyMethodOverride);
-  app.register(fastifyFormbody, { parser: qs.parse });
-  app.register(fastifyObjectionjs, {
+  await app.register(fastifyFormbody, { parser: qs.parse });
+  await app.register(fastifyObjectionjs, {
     knexConfig: knexConfig[mode],
     models,
   });
