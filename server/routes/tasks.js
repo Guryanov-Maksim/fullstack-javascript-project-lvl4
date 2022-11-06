@@ -1,6 +1,8 @@
 import i18next from 'i18next';
 import _ from 'lodash';
 
+import rollbar from '../logging/index.js';
+
 const getDefaultOptions = (app) => ({
   exposeHeadRoute: false,
   preValidation: app.fp.authenticate(
@@ -121,6 +123,8 @@ export default (app) => {
           ));
         task.$set({ ...request.body.data, labels: selectedLabels });
 
+        rollbar.log(err);
+
         request.flash('error', i18next.t('flash.tasks.create.error'));
         reply.render('tasks/new', { task, errors: err.data, statuses, users, labels });
       }
@@ -191,6 +195,7 @@ export default (app) => {
         req.flash('info', i18next.t('flash.tasks.edit.success'));
         reply.redirect(app.reverse('tasks'));
       } catch (err) {
+        rollbar.log(err);
         req.flash('error', i18next.t('flash.tasks.edit.error'));
 
         const statuses = await app.objection.models.status.query();
@@ -215,6 +220,7 @@ export default (app) => {
     })
     .delete('/tasks/:id', { exposeHeadRoute: false, ...getDefaultOptions(app) }, async (req, reply, error) => {
       if (error) {
+        rollbar.log(error);
         throw Error('internet error');
       }
       const authenticatedUserId = req.user.id;
@@ -247,6 +253,7 @@ export default (app) => {
         req.flash('info', i18next.t('flash.tasks.delete.success'));
         reply.redirect(app.reverse('tasks'));
       } catch (err) {
+        rollbar.log(err);
         req.flash('error', i18next.t('flash.tasks.delete.error'));
         reply.redirect(app.reverse('tasks'));
       }

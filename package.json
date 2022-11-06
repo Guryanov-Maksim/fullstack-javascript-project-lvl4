@@ -12,12 +12,12 @@
   },
   "jest": {
     "modulePathIgnorePatterns": [
-       "<rootDir>/__tests__/helpers/"
+      "<rootDir>/__tests__/helpers/"
     ],
     "setupFiles": [
-       "dotenv/config"
+      "dotenv/config"
     ]
- },
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Guryanov-Maksim/fullstack-javascript-project-lvl4.git"
@@ -53,6 +53,7 @@
     "pg": "^8.8.0",
     "pug": "^3.0.2",
     "qs": "^6.11.0",
+    "rollbar": "^2.25.2",
     "sqlite3": "^5.0.11"
   },
   "devDependencies": {

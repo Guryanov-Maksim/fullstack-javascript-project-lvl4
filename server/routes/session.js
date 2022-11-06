@@ -1,4 +1,5 @@
 import i18next from 'i18next';
+import rollbar from '../logging/index.js';
 
 export default (app) => {
   app
@@ -10,6 +11,7 @@ export default (app) => {
       'form',
       async (request, reply, error, user) => {
         if (error) {
+          rollbar.log(error);
           throw Error('internet error');
         }
         if (!user) {

@@ -1,4 +1,5 @@
 import i18next from 'i18next';
+import rollbar from '../logging/index.js';
 
 const getDefaultOptions = (app) => ({
   exposeHeadRoute: false,
@@ -32,6 +33,7 @@ export default (app) => {
         request.flash('info', i18next.t('flash.labels.create.success'));
         reply.redirect(app.reverse('labels'));
       } catch (err) {
+        rollbar.log(err);
         request.flash('error', i18next.t('flash.labels.create.error'));
         reply.render('labels/new', { label, errors: err.data });
       }
@@ -60,6 +62,7 @@ export default (app) => {
         req.flash('info', i18next.t('flash.labels.edit.success'));
         reply.redirect(app.reverse('labels'));
       } catch (err) {
+        rollbar.log(err);
         req.flash('error', i18next.t('flash.labels.edit.error'));
         reply.render('labels/edit', { label: { ...currentLabel, ...updatedLabel }, errors: err.data });
       }
@@ -76,6 +79,7 @@ export default (app) => {
         req.flash('info', i18next.t('flash.labels.delete.success'));
         reply.redirect(app.reverse('labels'));
       } catch (err) {
+        rollbar.log(err);
         req.flash('error', i18next.t('flash.labels.delete.error'));
         reply.redirect(app.reverse('labels'));
       }

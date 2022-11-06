@@ -1,4 +1,5 @@
 import i18next from 'i18next';
+import rollbar from '../logging/index.js';
 
 const getDefaultOptions = (app) => ({
   exposeHeadRoute: false,
@@ -32,6 +33,7 @@ export default (app) => {
         request.flash('info', i18next.t('flash.statuses.create.success'));
         reply.redirect(app.reverse('statuses'));
       } catch (err) {
+        rollbar.log(err);
         request.flash('error', i18next.t('flash.statuses.create.error'));
         reply.render('statuses/new', { status, errors: err.data });
       }
@@ -40,6 +42,7 @@ export default (app) => {
     })
     .get('/statuses/:id/edit', { exposeHeadRoute: false, ...getDefaultOptions(app) }, async (req, reply, error) => {
       if (error) {
+        rollbar.log(error);
         throw Error('internet error');
       }
       const { id } = req.params;
@@ -60,6 +63,7 @@ export default (app) => {
         req.flash('info', i18next.t('flash.statuses.edit.success'));
         reply.redirect(app.reverse('statuses'));
       } catch (err) {
+        rollbar.log(err);
         req.flash('error', i18next.t('flash.statuses.edit.error'));
         reply.render('statuses/edit', { status: { ...currentStatus, ...updatedStatus }, errors: err.data });
       }
@@ -76,6 +80,7 @@ export default (app) => {
         req.flash('info', i18next.t('flash.statuses.delete.success'));
         reply.redirect(app.reverse('statuses'));
       } catch (err) {
+        rollbar.log(err);
         req.flash('error', i18next.t('flash.statuses.delete.error'));
         reply.redirect(app.reverse('statuses'));
       }

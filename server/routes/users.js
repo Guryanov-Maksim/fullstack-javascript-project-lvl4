@@ -1,4 +1,5 @@
 import i18next from 'i18next';
+import rollbar from '../logging/index.js';
 
 export default (app) => {
   app
@@ -21,6 +22,7 @@ export default (app) => {
         request.flash('info', i18next.t('flash.users.create.success'));
         reply.redirect(app.reverse('root'));
       } catch (err) {
+        rollbar.log(err);
         request.flash('error', i18next.t('flash.users.create.error'));
         reply.render('users/new', { user, errors: err.data }); // see TODO 1
       }
@@ -41,6 +43,7 @@ export default (app) => {
       },
       async (req, reply, error) => {
         if (error) {
+          rollbar.log(error);
           throw Error('internet error');
         }
         const authenticatedUserid = req.user.id;
@@ -65,6 +68,7 @@ export default (app) => {
         req.flash('info', i18next.t('flash.edit.success'));
         reply.redirect(app.reverse('users'));
       } catch (err) {
+        rollbar.log(err);
         req.flash('error', i18next.t('flash.edit.error'));
         reply.render('users/edit', { user, errors: err.data });
       }
@@ -85,6 +89,7 @@ export default (app) => {
       },
       async (req, reply, error) => {
         if (error) {
+          rollbar.log(error);
           throw Error('internet error');
         }
 
@@ -101,6 +106,7 @@ export default (app) => {
           req.flash('info', i18next.t('flash.delete.success'));
           reply.redirect(app.reverse('users'));
         } catch (err) {
+          rollbar.log(err);
           req.flash('error', i18next.t('flash.delete.error'));
           reply.redirect(app.reverse('users'));
         }

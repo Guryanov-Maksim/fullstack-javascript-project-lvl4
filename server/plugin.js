@@ -28,6 +28,7 @@ import ru from './locales/ru.js';
 import models from './models/index.js';
 import * as knexConfig from '../knexfile.js';
 import FormStrategy from './lib/FormStrategy/index.js';
+import rollbar from './logging/index.js';
 
 const __dirname = fileURLToPath(path.dirname(import.meta.url));
 
@@ -102,6 +103,7 @@ const registerPlugins = async (app) => {
     knexConfig: knexConfig[mode],
     models,
   });
+  await app.register(async () => rollbar.errorHandler());
 };
 
 export default async (app, options) => {
