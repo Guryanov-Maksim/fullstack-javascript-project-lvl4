@@ -1,5 +1,6 @@
 // 1. npx knex init - создает knexfile.js? его содержимое нужно потом немного подстроить
-// 2. npx knex migrate:make create_users_table --esm - создает макет миграции, нужно самому написать таблицы 
+// 2. npx knex migrate:make create_users_table --esm - создает макет миграции,
+//    нужно самому написать таблицы
 // 3.  npx knex migrate:up - создает базу и создает в ней таблицу, описанную в migrations
 
 import path from 'path';
@@ -15,7 +16,7 @@ export const development = {
   client: 'sqlite3',
   useNullAsDefault: true,
   connection: {
-    filename: './default.sqlite'
+    filename: './default.sqlite',
   },
   pool: {
     afterCreate: (conn, cb) => (
@@ -43,35 +44,3 @@ export const test = {
   useNullAsDefault: true,
   migrations,
 };
-  // staging: {
-  //   client: 'postgresql',
-  //   connection: {
-  //     database: 'my_db',
-  //     user:     'username',
-  //     password: 'password'
-  //   },
-  //   pool: {
-  //     min: 2,
-  //     max: 10
-  //   },
-  //   migrations: {
-  //     tableName: 'knex_migrations'
-  //   }
-  // },
-
-  // production: {
-  //   client: 'postgresql',
-  //   connection: {
-  //     database: 'my_db',
-  //     user:     'username',
-  //     password: 'password'
-  //   },
-  //   pool: {
-  //     min: 2,
-  //     max: 10
-  //   },
-  //   migrations: {
-  //     tableName: 'knex_migrations'
-  //   }
-  // }
-

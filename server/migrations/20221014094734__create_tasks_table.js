@@ -8,7 +8,6 @@ export const up = (knex) => (
       .references('id')
       .inTable('statuses')
       .onDelete('RESTRICT');
-      // .index();
     table
       .integer('creator_id')
       .references('id')

@@ -1,5 +1,4 @@
 import fastify from 'fastify';
-import _ from 'lodash';
 
 import init from '../server/plugin';
 import { getTestData, prepareData } from './helpers';

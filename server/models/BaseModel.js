@@ -1,18 +1,18 @@
 import { AjvValidator, Model } from 'objection';
-import addFormats from "ajv-formats";
+import addFormats from 'ajv-formats';
 
 class BaseModel extends Model {
   static createValidator() {
     return new AjvValidator({
-      onCreateAjv: ajv => {
+      onCreateAjv: (ajv) => {
         addFormats(ajv);
       },
       options: {
         allErrors: true,
         validateSchema: false,
         ownProperties: true,
-        v5: true
-      }
+        v5: true,
+      },
     });
   }
 }

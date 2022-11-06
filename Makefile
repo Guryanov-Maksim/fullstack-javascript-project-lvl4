@@ -4,6 +4,9 @@ build:
 install:
 	npm ci
 
+lint:
+	npx eslint .
+
 start:
 	heroku local -f Procfile.dev
 

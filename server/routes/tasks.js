@@ -126,7 +126,13 @@ export default (app) => {
         rollbar.log(err);
 
         request.flash('error', i18next.t('flash.tasks.create.error'));
-        reply.render('tasks/new', { task, errors: err.data, statuses, users, labels });
+        reply.render('tasks/new', {
+          task,
+          errors: err.data,
+          statuses,
+          users,
+          labels,
+        });
       }
 
       return reply;
@@ -141,7 +147,12 @@ export default (app) => {
       const users = await app.objection.models.user.query();
       const labels = await app.objection.models.label.query();
 
-      reply.render('tasks/edit', { task, statuses, users, labels });
+      reply.render('tasks/edit', {
+        task,
+        statuses,
+        users,
+        labels,
+      });
 
       return reply;
     })

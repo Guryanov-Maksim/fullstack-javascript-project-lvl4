@@ -5,7 +5,7 @@ import BaseModel from './BaseModel.js';
 
 const unique = objectionUnique({
   fields: ['email'],
-})
+});
 
 class User extends unique(BaseModel) {
   static get tableName() {
@@ -28,13 +28,14 @@ class User extends unique(BaseModel) {
 
   // usual setter for an plain js object.
   // Used during registration.
-  // It creates a passwordDigest property with an encrypted password during changing the password property
-  // objectionjs sets the password property itself during 
-  //      user.$set(request.body.data); 
-  // and 
+  // It creates a passwordDigest property with an encrypted password
+  // during changing the password property
+  // objectionjs sets the password property itself during
+  //      user.$set(request.body.data);
+  // and
   //      const validUser = await app.objection.models.user.fromJson(request.body.data);
   // passwordDigest will be saved in the db
-  set password(value) { 
+  set password(value) {
     this.passwordDigest = encrypt(value);
   }
 

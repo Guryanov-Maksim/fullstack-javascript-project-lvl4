@@ -1,15 +1,13 @@
 /*
  TODO:
-1. Find a postgressql service instead of Heroku. 
+1. Find a postgressql service instead of Heroku.
     After November 28, 2022 Heroku Postgres will turn into a pumpkin
     see https://devcenter.heroku.com/articles/heroku-postgresql
-
-
 */
+
 import Pug from 'pug';
 import fastifyPointOfView from '@fastify/view';
 import fastifyStatic from '@fastify/static';
-import fastifyFlash from '@fastify/flash';
 import fastifyFormbody from '@fastify/formbody';
 import fastifyObjectionjs from 'fastify-objectionjs';
 import fastifyMethodOverride from 'fastify-method-override';
@@ -74,7 +72,7 @@ const setupLocalization = async () => {
 
 const addHooks = (app) => {
   app.addHook('preHandler', async (req, reply) => {
-    reply.locals = {
+    reply.locals = { // eslint-disable-line no-param-reassign
       isAuthenticated: () => req.isAuthenticated(),
     };
   });
@@ -96,7 +94,6 @@ const registerPlugins = async (app) => {
     app.objection.models.user.query().findById(user.id)
   ));
   app.decorate('fp', fastifyPassport);
-  // app.register(fastifyFlash);
   await app.register(fastifyMethodOverride);
   app.register(fastifyFormbody, { parser: qs.parse });
   app.register(fastifyObjectionjs, {
@@ -106,7 +103,8 @@ const registerPlugins = async (app) => {
   await app.register(async () => rollbar.errorHandler());
 };
 
-export default async (app, options) => {
+// eslint-disable-next-line no-unused-vars
+export default async (app, _options) => {
   await registerPlugins(app);
   await setupLocalization();
   setUpStaticAssets(app);
