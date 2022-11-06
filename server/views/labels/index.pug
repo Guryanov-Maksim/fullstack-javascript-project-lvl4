@@ -4,7 +4,7 @@ block header
   = t('views.labels.header')
 
 block content
-  a.btn.btn-primary(href=`labels/new`)= t('views.labels.create')
+  a.btn.btn-primary(href=route('newLabels'))= t('views.labels.create')
   table.table.table-striped
     thead
       tr
@@ -19,5 +19,5 @@ block content
           td= formatDate(label.createdAt)
           td
             div.d-flex.flex-wrap
-              a.btn.btn-primary.me-1(href=`labels/${label.id}/edit`)= t('views.labels.edit.change')
-              +buttonTo(`/labels/${label.id}`, 'delete')(class="btn btn-danger" value=t('views.labels.edit.delete'))
+              a.btn.btn-primary.me-1(href=route('editLabels', label.id))= t('views.labels.edit.change')
+              +buttonTo(route('destroyLabels', label.id), 'delete')(class="btn btn-danger" value=t('views.labels.edit.delete'))

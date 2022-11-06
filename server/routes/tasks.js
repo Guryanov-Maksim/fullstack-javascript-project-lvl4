@@ -2,17 +2,7 @@ import i18next from 'i18next';
 import _ from 'lodash';
 
 import rollbar from '../logging/index.js';
-
-const getDefaultOptions = (app) => ({
-  exposeHeadRoute: false,
-  preValidation: app.fp.authenticate(
-    'form',
-    {
-      failureRedirect: app.reverse('root'),
-      failureFlash: i18next.t('flash.authError'),
-    },
-  ),
-});
+import { getDefaultOptions } from '../helpers/index.js';
 
 const getLabelIds = (data) => {
   const rawLabelIds = _.get(data, 'labels', []);
@@ -82,7 +72,7 @@ export default (app) => {
 
       return reply;
     })
-    .post('/tasks', { exposeHeadRoute: false, ...getDefaultOptions(app) }, async (request, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
+    .post('/tasks', { name: 'createTask', ...getDefaultOptions(app) }, async (request, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
       const Task = app.objection.models.task;
       const task = new Task();
       task.$set(request.body.data);
@@ -137,7 +127,7 @@ export default (app) => {
 
       return reply;
     })
-    .get('/tasks/:id/edit', { exposeHeadRoute: false, ...getDefaultOptions(app) }, async (req, reply, error) => {
+    .get('/tasks/:id/edit', { name: 'editTask', ...getDefaultOptions(app) }, async (req, reply, error) => {
       if (error) {
         throw Error('internet error');
       }
@@ -156,7 +146,7 @@ export default (app) => {
 
       return reply;
     })
-    .patch('/tasks/:id', { exposeHeadRoute: false, ...getDefaultOptions(app) }, async (req, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
+    .patch('/tasks/:id', { name: 'updateTask', ...getDefaultOptions(app) }, async (req, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
       const Task = app.objection.models.task;
       const updatedTask = new Task();
       updatedTask.$set(req.body.data);
@@ -229,7 +219,7 @@ export default (app) => {
 
       return reply;
     })
-    .delete('/tasks/:id', { exposeHeadRoute: false, ...getDefaultOptions(app) }, async (req, reply, error) => {
+    .delete('/tasks/:id', { name: 'destroyTask', ...getDefaultOptions(app) }, async (req, reply, error) => {
       if (error) {
         rollbar.log(error);
         throw Error('internet error');

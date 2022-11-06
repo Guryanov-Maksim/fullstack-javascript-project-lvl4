@@ -6,6 +6,6 @@ block header
 block content
   .card
     .card-body.p-5.bg-light
-      +formFor()(action=`/statuses/${status.id}` method='post')
-        +input(status, 'name', errors)(type="text")
-        +buttonTo(`/statuses/${status.id}`, 'patch')(class="btn btn-primary" value=t('views.statuses.edit.change'))
+      +formFor()(action=route('updateStatus', status.id) method='post')
+        +input(status, 'name', errors, 'statuses')(type="text")
+        +buttonTo(route('updateStatus', status.id), 'patch')(class="btn btn-primary" value=t('views.statuses.edit.change'))

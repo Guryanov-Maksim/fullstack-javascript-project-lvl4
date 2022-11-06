@@ -1,9 +1,19 @@
 import i18next from 'i18next';
 import _ from 'lodash';
 
+export const getDefaultOptions = (app) => ({
+  preValidation: app.fp.authenticate(
+    'form',
+    {
+      failureRedirect: app.reverse('root'),
+      failureFlash: i18next.t('flash.authError'),
+    },
+  ),
+});
+
 export default (app) => ({
-  route(name) {
-    return app.reverse(name);
+  route(name, id) {
+    return app.reverse(name, { id });
   },
   t(key) {
     return i18next.t(key);

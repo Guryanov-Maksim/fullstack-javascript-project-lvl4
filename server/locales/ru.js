@@ -32,7 +32,7 @@ export default {
       },
       session: {
         new: {
-          mail: 'Email',
+          email: 'Email',
           password: 'Пароль',
           signIn: 'Вход',
           submit: 'Войти',

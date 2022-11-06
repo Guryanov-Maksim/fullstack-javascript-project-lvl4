@@ -1,17 +1,18 @@
 import i18next from 'i18next';
 import rollbar from '../logging/index.js';
+import { getDefaultOptions } from '../helpers/index.js';
 
 export default (app) => {
   app
-    .get('/users/new', { name: 'newUser', exposeHeadRoute: false }, (request, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
+    .get('/users/new', { name: 'newUser' }, (request, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
       reply.render('users/new');
     })
-    .get('/users', { name: 'users', exposeHeadRoute: false }, async (request, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
+    .get('/users', { name: 'users' }, async (request, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
       const users = await app.objection.models.user.query();
       reply.render('users/index', { users });
       return reply;
     })
-    .post('/users', { exposeHeadRoute: false }, async (request, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
+    .post('/users', { name: 'createUser' }, async (request, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
       const User = app.objection.models.user;
       const user = new User();
       user.$set(request.body.data);
@@ -29,35 +30,22 @@ export default (app) => {
 
       return reply;
     })
-    .get(
-      '/users/:id/edit',
-      {
-        exposeHeadRoute: false,
-        preValidation: app.fp.authenticate(
-          'form',
-          {
-            failureRedirect: app.reverse('root'),
-            failureFlash: i18next.t('flash.authError'),
-          },
-        ),
-      },
-      async (req, reply, error) => {
-        if (error) {
-          rollbar.log(error);
-          throw Error('internet error');
-        }
-        const authenticatedUserid = req.user.id;
-        const { id } = req.params;
-        if (authenticatedUserid !== Number(id)) {
-          req.flash('error', i18next.t('flash.edit.accessError'));
-          reply.redirect(app.reverse('users'));
-          return reply;
-        }
-        reply.render('users/edit', { user: req.user });
+    .get('/users/:id/edit', { name: 'editUser', ...getDefaultOptions(app) }, async (req, reply, error) => {
+      if (error) {
+        rollbar.log(error);
+        throw Error('internet error');
+      }
+      const authenticatedUserid = req.user.id;
+      const { id } = req.params;
+      if (authenticatedUserid !== Number(id)) {
+        req.flash('error', i18next.t('flash.edit.accessError'));
+        reply.redirect(app.reverse('users'));
         return reply;
-      },
-    )
-    .patch('/users/:id', { exposeHeadRoute: false }, async (req, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
+      }
+      reply.render('users/edit', { user: req.user });
+      return reply;
+    })
+    .patch('/users/:id', { name: 'updateUser', ...getDefaultOptions(app) }, async (req, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
       const User = app.objection.models.user;
       const user = new User();
       user.$set(req.body.data);
@@ -75,43 +63,30 @@ export default (app) => {
 
       return reply;
     })
-    .delete(
-      '/users/:id',
-      {
-        exposeHeadRoute: false,
-        preValidation: app.fp.authenticate(
-          'form',
-          {
-            failureRedirect: app.reverse('root'),
-            failureFlash: i18next.t('flash.authError'),
-          },
-        ),
-      },
-      async (req, reply, error) => {
-        if (error) {
-          rollbar.log(error);
-          throw Error('internet error');
-        }
+    .delete('/users/:id', { name: 'destroyUser', ...getDefaultOptions(app) }, async (req, reply, error) => {
+      if (error) {
+        rollbar.log(error);
+        throw Error('internet error');
+      }
 
-        const authenticatedUserid = req.user.id;
-        const { id } = req.params;
-        if (authenticatedUserid !== Number(id)) {
-          req.flash('error', i18next.t('flash.edit.accessError'));
-          reply.redirect(app.reverse('users'));
-          return reply;
-        }
-        try {
-          await app.objection.models.user.query().deleteById(authenticatedUserid);
-          req.logOut();
-          req.flash('info', i18next.t('flash.delete.success'));
-          reply.redirect(app.reverse('users'));
-        } catch (err) {
-          rollbar.log(err);
-          req.flash('error', i18next.t('flash.delete.error'));
-          reply.redirect(app.reverse('users'));
-        }
-
+      const authenticatedUserid = req.user.id;
+      const { id } = req.params;
+      if (authenticatedUserid !== Number(id)) {
+        req.flash('error', i18next.t('flash.edit.accessError'));
+        reply.redirect(app.reverse('users'));
         return reply;
-      },
-    );
+      }
+      try {
+        await app.objection.models.user.query().deleteById(authenticatedUserid);
+        req.logOut();
+        req.flash('info', i18next.t('flash.delete.success'));
+        reply.redirect(app.reverse('users'));
+      } catch (err) {
+        rollbar.log(err);
+        req.flash('error', i18next.t('flash.delete.error'));
+        reply.redirect(app.reverse('users'));
+      }
+
+      return reply;
+    });
 };

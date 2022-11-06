@@ -103,6 +103,10 @@ const registerPlugins = async (app) => {
   await app.register(async () => rollbar.errorHandler());
 };
 
+export const options = {
+  exposeHeadRoutes: false,
+};
+
 // eslint-disable-next-line no-unused-vars
 export default async (app, _options) => {
   await registerPlugins(app);

@@ -1,16 +1,6 @@
 import i18next from 'i18next';
 import rollbar from '../logging/index.js';
-
-const getDefaultOptions = (app) => ({
-  exposeHeadRoute: false,
-  preValidation: app.fp.authenticate(
-    'form',
-    {
-      failureRedirect: app.reverse('root'),
-      failureFlash: i18next.t('flash.authError'),
-    },
-  ),
-});
+import { getDefaultOptions } from '../helpers/index.js';
 
 export default (app) => {
   app
@@ -19,10 +9,10 @@ export default (app) => {
       reply.render('labels/index', { labels });
       return reply;
     })
-    .get('/labels/new', { name: 'newLabel', ...getDefaultOptions(app) }, (request, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
+    .get('/labels/new', { name: 'newLabels', ...getDefaultOptions(app) }, (request, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
       reply.render('labels/new');
     })
-    .post('/labels', { exposeHeadRoute: false, ...getDefaultOptions(app) }, async (request, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
+    .post('/labels', { name: 'createLabels', ...getDefaultOptions(app) }, async (request, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
       const Label = app.objection.models.label;
       const label = new Label();
       label.$set(request.body.data);
@@ -40,7 +30,7 @@ export default (app) => {
 
       return reply;
     })
-    .get('/labels/:id/edit', { exposeHeadRoute: false, ...getDefaultOptions(app) }, async (req, reply, error) => {
+    .get('/labels/:id/edit', { name: 'editLabels', ...getDefaultOptions(app) }, async (req, reply, error) => {
       if (error) {
         throw Error('internet error');
       }
@@ -49,7 +39,7 @@ export default (app) => {
       reply.render('labels/edit', { label });
       return reply;
     })
-    .patch('/labels/:id', { exposeHeadRoute: false, ...getDefaultOptions(app) }, async (req, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
+    .patch('/labels/:id', { name: 'updateLabels', ...getDefaultOptions(app) }, async (req, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
       const Label = app.objection.models.label;
       const updatedLabel = new Label();
       updatedLabel.$set(req.body.data);
@@ -69,7 +59,7 @@ export default (app) => {
 
       return reply;
     })
-    .delete('/labels/:id', { exposeHeadRoute: false, ...getDefaultOptions(app) }, async (req, reply, error) => {
+    .delete('/labels/:id', { name: 'destroyLabels', ...getDefaultOptions(app) }, async (req, reply, error) => {
       if (error) {
         throw Error('internet error');
       }

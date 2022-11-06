@@ -4,7 +4,7 @@ block header
   = t('views.statuses.header')
 
 block content
-  a.btn.btn-primary(href=`statuses/new`)= t('views.statuses.create')
+  a.btn.btn-primary(href=route('newStatus'))= t('views.statuses.create')
   table.table.table-striped
     thead
       tr
@@ -19,5 +19,5 @@ block content
           td= formatDate(status.createdAt)
           td
             div.d-flex.flex-wrap
-              a.btn.btn-primary.me-1(href=`statuses/${status.id}/edit`)= t('views.statuses.edit.change')
-              +buttonTo(`/statuses/${status.id}`, 'delete')(class="btn btn-danger" value=t('views.statuses.edit.delete'))
+              a.btn.btn-primary.me-1(href=route('editStatus', status.id))= t('views.statuses.edit.change')
+              +buttonTo(route('destroyStatus', status.id), 'delete')(class="btn btn-danger" value=t('views.statuses.edit.delete'))

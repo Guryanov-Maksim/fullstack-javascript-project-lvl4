@@ -1,16 +1,6 @@
 import i18next from 'i18next';
 import rollbar from '../logging/index.js';
-
-const getDefaultOptions = (app) => ({
-  exposeHeadRoute: false,
-  preValidation: app.fp.authenticate(
-    'form',
-    {
-      failureRedirect: app.reverse('root'),
-      failureFlash: i18next.t('flash.authError'),
-    },
-  ),
-});
+import { getDefaultOptions } from '../helpers/index.js';
 
 export default (app) => {
   app
@@ -22,7 +12,7 @@ export default (app) => {
     .get('/statuses/new', { name: 'newStatus', ...getDefaultOptions(app) }, (request, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
       reply.render('statuses/new');
     })
-    .post('/statuses', { exposeHeadRoute: false, ...getDefaultOptions(app) }, async (request, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
+    .post('/statuses', { name: 'createStatus', ...getDefaultOptions(app) }, async (request, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
       const Status = app.objection.models.status;
       const status = new Status();
       status.$set(request.body.data);
@@ -40,7 +30,7 @@ export default (app) => {
 
       return reply;
     })
-    .get('/statuses/:id/edit', { exposeHeadRoute: false, ...getDefaultOptions(app) }, async (req, reply, error) => {
+    .get('/statuses/:id/edit', { name: 'editStatus', ...getDefaultOptions(app) }, async (req, reply, error) => {
       if (error) {
         rollbar.log(error);
         throw Error('internet error');
@@ -50,7 +40,7 @@ export default (app) => {
       reply.render('statuses/edit', { status });
       return reply;
     })
-    .patch('/statuses/:id', { exposeHeadRoute: false, ...getDefaultOptions(app) }, async (req, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
+    .patch('/statuses/:id', { name: 'updateStatus', ...getDefaultOptions(app) }, async (req, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
       const Status = app.objection.models.status;
       const updatedStatus = new Status();
       updatedStatus.$set(req.body.data);
@@ -70,7 +60,7 @@ export default (app) => {
 
       return reply;
     })
-    .delete('/statuses/:id', { exposeHeadRoute: false, ...getDefaultOptions(app) }, async (req, reply, error) => {
+    .delete('/statuses/:id', { name: 'destroyStatus', ...getDefaultOptions(app) }, async (req, reply, error) => {
       if (error) {
         throw Error('internet error');
       }

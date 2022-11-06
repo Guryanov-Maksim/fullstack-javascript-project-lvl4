@@ -6,9 +6,9 @@ block header
 block content
   .card
     .card-body.p-5.bg-light
-      +formFor()(action=`/users/${user.id}` method='post')
-        +input(user, 'firstName', errors)(type="text")
-        +input(user, 'lastName', errors)(type="text")
-        +input(user, 'email', errors)(type="text")
-        +input(user, 'password', errors)(type="password")
-        +buttonTo(`/users/${user.id}`, 'patch')(class="btn btn-primary" value=t('views.users.edit.send'))
+      +formFor()(action=route('updateUser', user.id) method='post')
+        +input(user, 'firstName', errors, 'users')(type="text")
+        +input(user, 'lastName', errors, 'users')(type="text")
+        +input(user, 'email', errors, 'users')(type="text")
+        +input(user, 'password', errors, 'users')(type="password")
+        +buttonTo(route('updateUser', user.id), 'patch')(class="btn btn-primary" value=t('views.users.edit.send'))
