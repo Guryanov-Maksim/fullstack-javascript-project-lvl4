@@ -30,7 +30,8 @@ block content
         - const executor = users.find((user) => user.id === task.executorId) || {};
         tr
           td= task.id
-          td= task.name
+          td
+            a(href=route('showTask', task.id))= task.name
           td= task.status.name
           td= author.name
           td= executor.name

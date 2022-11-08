@@ -67,8 +67,18 @@ export default (app) => {
       const statuses = await app.objection.models.status.query();
       const users = await app.objection.models.user.query();
       const labels = await app.objection.models.label.query();
-
       reply.render('tasks/new', { statuses, users, labels });
+
+      return reply;
+    })
+    .get('/tasks/:id', { name: 'showTask', ...getDefaultOptions(app) }, async (req, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
+      const { id } = req.params;
+      const task = await app.objection.models.task
+        .query()
+        .findById(id)
+        .withGraphFetched('[status, labels, executor, creator]');
+
+      reply.render('tasks/show', { task });
 
       return reply;
     })

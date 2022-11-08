@@ -85,6 +85,13 @@ export default {
           isCreatorUser: 'Только мои задачи',
           show: 'Показать',
         },
+        show: {
+          createdAt: 'Дата создания',
+          creator: 'Автор',
+          executor: 'Исполнитель',
+          change: 'Изменить',
+          delete: 'Удалить',
+        },
       },
       users: {
         new: {
