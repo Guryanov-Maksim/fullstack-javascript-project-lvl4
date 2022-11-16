@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "prebuild": "rm -rf dist",
-    "build": "NODE_ENV=production webpack --mode production",
+    "build": "NODE_ENV=production webpack --mode production & npx knex migrate:latest",
     "test": "jest",
     "start": "fastify start server/plugin.js -l debug -P -o --port $PORT -a 0.0.0.0"
   },
