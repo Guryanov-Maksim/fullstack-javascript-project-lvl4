@@ -49,7 +49,8 @@ export default (app) => {
     .patch('/users/:id', { name: 'updateUser', ...getDefaultOptions(app) }, async (req, reply) => { // without exposeHeadRoute: false "Route with name root already registered" error will be thown by fastifyReverseRoutes plugin because of the HEAD request
       const User = app.objection.models.user;
       const user = new User();
-      user.$set(req.body.data);
+      const { id } = req.params;
+      user.$set({ id, ...req.body.data });
 
       try {
         const validUser = await app.objection.models.user.fromJson(req.body.data);
@@ -58,7 +59,6 @@ export default (app) => {
         reply.redirect(app.reverse('users'));
       } catch (err) {
         rollbar.log(err);
-        console.log(err);
         req.flash('error', i18next.t('flash.edit.error'));
         reply.render('users/edit', { user, errors: err.data });
       }
@@ -80,7 +80,7 @@ export default (app) => {
       }
       try {
         await app.objection.models.user.query().deleteById(authenticatedUserid);
-        req.logOut();
+        await req.logOut();
         req.flash('info', i18next.t('flash.delete.success'));
         reply.redirect(app.reverse('users'));
       } catch (err) {

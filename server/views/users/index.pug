@@ -22,4 +22,4 @@ block content
           td
             div.d-flex.flex-wrap
               a.btn.btn-primary.me-1(href=route('editUser', user.id))= t('views.users.edit.change')
-              +buttonTo(route('destroyTask', user.id), 'delete')(class="btn btn-danger" value=t('views.users.edit.delete'))
+              +buttonTo(route('destroyUser', user.id), 'delete')(class="btn btn-danger" value=t('views.users.edit.delete'))
