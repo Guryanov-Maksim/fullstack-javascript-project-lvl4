@@ -23,6 +23,7 @@ export default (app) => {
         request.flash('info', i18next.t('flash.users.create.success'));
         reply.redirect(app.reverse('root'));
       } catch (err) {
+        console.log(err);
         rollbar.log(err);
         request.flash('error', i18next.t('flash.users.create.error'));
         reply.render('users/new', { user, errors: err.data }); // see TODO 1
