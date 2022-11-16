@@ -22,4 +22,11 @@ export const up = (knex) => (
   })
 );
 
-export const down = (knex) => knex.schema.dropTable('tasks');
+// export const down = (knex) => knex.schema.dropTable('tasks');
+export const down = (knex) => knex.schema.hasTable('tasks')
+  .then((exists) => {
+    if (!exists) {
+      return false;
+    }
+    return knex.schema.dropTable('tasks');
+  });
