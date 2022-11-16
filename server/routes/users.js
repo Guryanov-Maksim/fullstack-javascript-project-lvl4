@@ -53,10 +53,10 @@ export default (app) => {
 
       try {
         const validUser = await app.objection.models.user.fromJson(req.body.data);
-        await await app.objection.models.user
+        const currentUser = await app.objection.models.user
           .query()
-          .findById(id)
-          .patch(validUser);
+          .findById(id);
+        await currentUser.$query().patch(validUser);
         // await req.user.$query().patch(validUser); // watch this https://vincit.github.io/objection.js/guide/query-examples.html#update-queries
         req.flash('info', i18next.t('flash.edit.success'));
         reply.redirect(app.reverse('users'));
