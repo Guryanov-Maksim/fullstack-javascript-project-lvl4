@@ -1,8 +1,7 @@
-export const up = (knex) => knex.schema.hasTable('users')
-  .then((exists) => {
-    if (!exists) {
-      return false;
-    }
+export const up = async (knex) => {
+  const isExist = await knex.schema.hasTable('users');
+
+  if (!isExist) {
     return knex.schema.createTable('users', (table) => {
       table.increments('id').primary();
       table.string('first_name');
@@ -12,7 +11,25 @@ export const up = (knex) => knex.schema.hasTable('users')
       table.timestamp('created_at').defaultTo(knex.fn.now());
       table.timestamp('updated_at').defaultTo(knex.fn.now());
     });
-  });
+  }
+};
+
+// export const up = (knex) => knex.schema.hasTable('users')
+//   .then((exists) => {
+//     if (!exists) {
+//       return false;
+//     }
+//     return knex.schema.createTable('users', (table) => {
+//       table.increments('id').primary();
+//       table.string('first_name');
+//       table.string('last_name');
+//       table.string('email');
+//       table.string('password_digest');
+//       table.timestamp('created_at').defaultTo(knex.fn.now());
+//       table.timestamp('updated_at').defaultTo(knex.fn.now());
+//     });
+//   });
+
 // export const up = (knex) => (
 //   knex.schema.createTable('users', (table) => {
 //     table.increments('id').primary();
@@ -25,11 +42,19 @@ export const up = (knex) => knex.schema.hasTable('users')
 //   })
 // );
 
-export const down = (knex) => knex.schema.hasTable('users')
-  .then((exists) => {
-    if (!exists) {
-      return false;
-    }
+export const down = async (knex) => {
+  const isExist = await knex.schema.hasTable('users');
+
+  if (!isExist) {
     return knex.schema.dropTable('users');
-  });
+  }
+};
+// export const down = (knex) => knex.schema.hasTable('users')
+//   .then((exists) => {
+//     if (!exists) {
+//       return false;
+//     }
+//     return knex.schema.dropTable('users');
+//   });
+
 // export const down = (knex) => knex.schema.dropTable('users');

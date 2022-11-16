@@ -1,14 +1,25 @@
-export const up = (knex) => knex.schema.hasTable('labels')
-  .then((exists) => {
-    if (!exists) {
-      return false;
-    }
+export const up = async (knex) => {
+  const isExist = await knex.schema.hasTable('labels');
+
+  if (!isExist) {
     return knex.schema.createTable('labels', (table) => {
       table.increments('id').primary();
       table.string('name');
       table.timestamp('created_at').defaultTo(knex.fn.now());
     });
-  });
+  }
+};
+// export const up = (knex) => knex.schema.hasTable('labels')
+//   .then((exists) => {
+//     if (!exists) {
+//       return false;
+//     }
+//     return knex.schema.createTable('labels', (table) => {
+//       table.increments('id').primary();
+//       table.string('name');
+//       table.timestamp('created_at').defaultTo(knex.fn.now());
+//     });
+//   });
 // export const up = (knex) => (
 //   knex.schema.createTable('labels', (table) => {
 //     table.increments('id').primary();
@@ -17,11 +28,19 @@ export const up = (knex) => knex.schema.hasTable('labels')
 //   })
 // );
 
-export const down = (knex) => knex.schema.hasTable('labels')
-  .then((exists) => {
-    if (!exists) {
-      return false;
-    }
+export const down = async (knex) => {
+  const isExist = await knex.schema.hasTable('labels');
+
+  if (!isExist) {
     return knex.schema.dropTable('labels');
-  });
+  }
+};
+
+// export const down = (knex) => knex.schema.hasTable('labels')
+//   .then((exists) => {
+//     if (!exists) {
+//       return false;
+//     }
+//     return knex.schema.dropTable('labels');
+//   });
 // export const down = (knex) => knex.schema.dropTable('labels');
