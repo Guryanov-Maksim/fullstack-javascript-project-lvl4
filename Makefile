@@ -1,4 +1,4 @@
-setup: install db-migrate
+setup: prepare install db-migrate
 
 db-migrate:
 	npx knex migrate:latest
@@ -11,6 +11,9 @@ install:
 
 lint:
 	npx eslint .
+
+prepare:
+	cp -n .env.example .env || true
 
 start:
 	heroku local -f Procfile.dev
