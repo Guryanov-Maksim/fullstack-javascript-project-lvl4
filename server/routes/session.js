@@ -12,7 +12,7 @@ export default (app) => {
       async (request, reply, error, user) => {
         if (error) {
           rollbar.log(error);
-          throw Error('internet error');
+          throw error;
         }
         if (!user) {
           const signInForm = request.body.data;
