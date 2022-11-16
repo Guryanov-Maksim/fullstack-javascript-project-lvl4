@@ -96,7 +96,7 @@ export default {
       users: {
         new: {
           signUp: 'Регистрация',
-          submit: 'Отправить',
+          submit: 'Сохранить',
           firstName: 'Имя',
           lastName: 'Фамилия',
           password: 'Пароль',
