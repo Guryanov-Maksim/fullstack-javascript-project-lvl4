@@ -58,6 +58,7 @@ export default (app) => {
         reply.redirect(app.reverse('users'));
       } catch (err) {
         rollbar.log(err);
+        console.log(err);
         req.flash('error', i18next.t('flash.edit.error'));
         reply.render('users/edit', { user, errors: err.data });
       }
