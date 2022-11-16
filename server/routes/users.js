@@ -59,6 +59,11 @@ export default (app) => {
         const validUser = await app.objection.models.user.fromJson(req.body.data);
         console.log('------------------- validated user -----------------');
         console.log(validUser);
+        const userInDatabase = await app.objection.models.user
+          .query()
+          .where('email', `${req.body.data.email}`);
+        console.log('------------------- user is already in db --------------');
+        console.log(userInDatabase);
         const currentUser = await app.objection.models.user
           .query()
           .findById(id);
