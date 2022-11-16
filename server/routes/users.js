@@ -23,7 +23,6 @@ export default (app) => {
         request.flash('info', i18next.t('flash.users.create.success'));
         reply.redirect(app.reverse('root'));
       } catch (err) {
-        console.log(err);
         rollbar.log(err);
         request.flash('error', i18next.t('flash.users.create.error'));
         reply.render('users/new', { user, errors: err.data }); // see TODO 1
@@ -58,6 +57,8 @@ export default (app) => {
         req.flash('info', i18next.t('flash.edit.success'));
         reply.redirect(app.reverse('users'));
       } catch (err) {
+        console.log('---------------- update user error ---------------');
+        console.log(err);
         rollbar.log(err);
         req.flash('error', i18next.t('flash.edit.error'));
         reply.render('users/edit', { user, errors: err.data });
