@@ -50,12 +50,18 @@ export default (app) => {
       const user = new User();
       const { id } = req.params;
       user.$set({ id, ...req.body.data });
+      console.log('----------------- data from form --------------');
+      console.log(user);
 
       try {
         const validUser = await app.objection.models.user.fromJson(req.body.data);
+        console.log('------------------- validated user -----------------');
+        console.log(validUser);
         const currentUser = await app.objection.models.user
           .query()
           .findById(id);
+        console.log('---------------- current user -----------------');
+        console.log(currentUser);
         await currentUser.$query().update(validUser);
         // await req.user.$query().patch(validUser); // watch this https://vincit.github.io/objection.js/guide/query-examples.html#update-queries
         req.flash('info', i18next.t('flash.edit.success'));
