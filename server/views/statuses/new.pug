@@ -7,5 +7,5 @@ block content
   .card
     .card-body.p-5.bg-light
       +formFor()(action=route('statuses') method='post')
-        +input(status, 'name', errors)(type="text")
+        +input(status, 'name', errors, 'statuses')(type="text")
         +submit(status)(value=t('views.statuses.new.create'))

@@ -11,4 +11,4 @@ block content
         +input(user, 'lastName', errors, 'users')(type="text")
         +input(user, 'email', errors, 'users')(type="text")
         +input(user, 'password', errors, 'users')(type="password")
-        +buttonTo(route('updateUser', user.id), 'patch')(class="btn btn-primary" value=t('views.users.edit.send'))
+        +buttonTo(route('updateUser', user.id), 'patch')(class="btn btn-primary" value=t('views.users.edit.change'))
